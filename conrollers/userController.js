@@ -56,7 +56,65 @@ const loginUser = async (req, res) => {
     }
 }
 
+const getUser = async (req, res) => {
+    try {
+        const results = await User.find({});
+        res.status(200)
+            .json({message: "success", data: results })
+    } catch (err) {
+        res.status(500)
+            .json({message: "internal server error"})
+    }
+}
+
+
+const getUserById = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const result = await User.findById(id);
+        res.status(200)
+            .json({ message: "success", data: result });
+    } catch (err) {
+        res.status(500)
+            .json({ message: "Internal server error" });
+    }
+}
+
+
+const updateUserById = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const body = req.body;
+        const updateDoc = { $set: { ...body } };
+        updateDoc.updatedAt = Date.now();
+        await User.findByIdAndUpdate(id, updateDoc);
+        res.status(200)
+            .json({ message: "updated" });
+    } catch (err) {
+        res.status(500)
+            .json({ message: "Internal server error" });
+    }
+}
+
+const deleteUserById = async (req, res) => {
+    try {
+        const id = req.params.id;
+        await User.findByIdAndDelete(id);
+        res.status(200)
+            .json({ message: "deleted" });
+    } catch (err) {
+        res.status(500)
+            .json({ message: "Internal server error" });
+    }
+}
+
+
 module.exports = {
     registerUser,
-    loginUser
+    loginUser, 
+    getUser, 
+    getUserById,
+    updateUserById,
+    deleteUserById
+
 }

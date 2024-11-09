@@ -7,7 +7,7 @@ const { createProduct,
 
 const router = require('express').Router();
 
-router.post('/', createProduct); //secure
+router.post('/', ensureAuthenticated, createProduct); //secure
 router.get('/', getProducts);
 router.get('/:id', getProductById);
 router.put('/:id', ensureAuthenticated, updateProductById);//secure

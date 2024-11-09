@@ -1,41 +1,65 @@
 const mongoose = require('mongoose');
-const Schmea = mongoose.Schema;
+const Schema = mongoose.Schema;
 const validator = require('validator');
 
-// ```
-//  "name":"abc",
-//   "email": "abc@gmail.",
-//   "password":"123"
-// ```
-
-const UserModel = new Schmea(
+const UserModel = new Schema(
     {
         name: {
             type: String,
-            required: [true, "Please provide name"]
+            required: [true, "Please provide a username"]
+        },
+        profession: {
+            type: String,
+            required: [true, "Please provide a profession"]
+        },
+        phoneNumber: {
+            type: String,
+            required: [true, "Please provide a phone number"],
+            validate: {
+                validator: function(value) {
+                    return validator.isMobilePhone(value, 'any');
+                },
+                message: "Not a valid phone number"
+            }
         },
         email: {
             type: String,
             required: true,
-            validate(value) {
-                if (!validator.isEmail(value)) {
-                    throw Error('Not a valid Email')
-                }
+            validate: {
+                validator: function(value) {
+                    return validator.isEmail(value);
+                },
+                message: "Not a valid email"
             }
+        },
+        address: {
+            type: String,
+            required: [true, "Please provide an address"]
+        },
+        city: {
+            type: String,
+            required: [true, "Please provide a city"]
         },
         password: {
             type: String,
-            required: true
+            required: [true, "Please provide a password"]
+        },
+        isApproved: {
+            type: Boolean,
+            default: false
         },
         createdAt: {
             type: Date,
-            default: Date.now()
+            default: Date.now
         },
         updatedAt: {
             type: Date,
-            default: Date.now()
+            default: Date.now
         }
+    },
+    {
+        timestamps: true
     }
-)
+);
 
-module.exports = mongoose.model('users', UserModel);
+module.exports = mongoose.model('User', UserModel);

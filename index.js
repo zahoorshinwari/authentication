@@ -5,6 +5,7 @@ require('./db');
 const PORT =  8080;
 const productRoutes = require('./routes/productRoutes');
 const userRoutes = require('./routes/userRoutes');
+const adminRoutes = require('./routes/adminRoutes')
 app.use(express.json());
 
 app.get('/', (req, res) => {
@@ -24,6 +25,8 @@ app.get('/ping', (req, res) => {
 app.use('/products', productRoutes);
 // /users
 app.use('/users', userRoutes);
+
+app.use('/admins', adminRoutes)
 
 app.listen(8080, () => {
     console.log('Server is listenin on PORT :' + PORT);

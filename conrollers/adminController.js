@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Admin = require('../models/Admin');
+const User = require('../models/User');
 
 const registerAdmin = async (req, res) => {
     try {
@@ -122,11 +123,57 @@ const deleteAdminById = async (req, res) => {
     }
 }
 
+// Approve a user account
+const approveUser = async (req, res) => {
+    try {
+        const { userId } = req.params;
+
+        const user = await User.findByIdAndUpdate(
+            userId,
+            { isApproved: true, updatedAt: Date.now() },
+            { new: true }
+        );
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.status(200).json({ message: "User approved successfully", data: user });
+    } catch (err) {
+        console.error("Error in approving user:", err);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+// Reject a user account
+const rejectUser = async (req, res) => {
+    try {
+        const { userId } = req.params;
+
+        const user = await User.findByIdAndUpdate(
+            userId,
+            { isApproved: false, updatedAt: Date.now() },
+            { new: true }
+        );
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.status(200).json({ message: "User rejected successfully", data: user });
+    } catch (err) {
+        console.error("Error in rejecting user:", err);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
 module.exports = {
     registerAdmin,
     loginAdmin,
     getAdmins,
     getAdminById,
     updateAdminById,
-    deleteAdminById
+    deleteAdminById, 
+    approveUser,
+    rejectUser
 };

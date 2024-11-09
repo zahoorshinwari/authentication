@@ -11,7 +11,6 @@ const registerUser = async (req, res) => {
             return res.status(400).json({ message: "All fields are required" });
         }
 
-        // Check if user already exists
         const existingUser = await User.findOne({ email });
         if (existingUser) {
             return res.status(409).json({ message: "User already exists" });
@@ -26,37 +25,37 @@ const registerUser = async (req, res) => {
             phoneNumber,
             profession,
             address,
-            city
+            city,
+            isApproved: false  // Set approval status to false
         });
 
         await newUser.save();
-        
-        res.status(201).json({ message: "Registration successful" });
+        res.status(201).json({ message: "Registration successful. Awaiting admin approval." });
     } catch (err) {
         console.error("Error in registration:", err.message);
         res.status(500).json({ message: "Internal server error" });
     }
 };
 
-
 // Login an existing user
 const loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        // Find the user by email
         const user = await User.findOne({ email });
         if (!user) {
             return res.status(403).json({ message: "Auth failed: username/password incorrect" });
         }
 
-        // Check if the password is correct
+        if (!user.isApproved) {
+            return res.status(403).json({ message: "Account not approved by admin." });
+        }
+
         const isPasswordMatch = await bcrypt.compare(password, user.password);
         if (!isPasswordMatch) {
             return res.status(403).json({ message: "Auth failed: username/password incorrect" });
         }
 
-        // Create a JWT token
         const userObject = { email, name: user.name, _id: user._id };
         const jwtToken = jwt.sign(userObject, "webjsonwebtoken", { expiresIn: '4h' });
 

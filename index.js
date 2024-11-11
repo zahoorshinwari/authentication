@@ -11,12 +11,10 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
 app.use(express.json());
-// Enable CORS for the specific frontend URL
 app.use(cors({
-    origin: 'https://authentication-frontend-phi.vercel.app', // Your frontend URL
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-  }));
+    origin: "http://localhost:5173",  // Corrected URL to use http://
+    credentials: true                // Corrected key to 'credentials'
+}));
 app.use(cookieParser());
 
 app.get('/', (req, res) => {

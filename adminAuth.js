@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const ensureAuthenticated = async (req, res, next) => {
+const ensureAdminAuthenticated = async (req, res, next) => {
     // Check if the Authorization header exists
     const authHeader = req.headers['authorization'];
     
@@ -18,10 +18,15 @@ const ensureAuthenticated = async (req, res, next) => {
 
     try {
         // Verify and decode the JWT token
-        const decoded = jwt.verify(token, "userwebjsonwebtoken");
+        const decoded = jwt.verify(token, "adminjsonwebtoken");
 
-        // Attach the decoded user info to the request object
-        req.userInfo = decoded;
+        // Check if the role in the token payload is 'admin'
+        if (decoded.role !== 'admin') {
+            return res.status(403).json({ message: "Forbidden: Admins only" });
+        }
+
+        // Attach the decoded admin info to the request object
+        req.adminInfo = decoded;
         console.log(decoded);
 
         // Continue to the next middleware or route handler
@@ -32,4 +37,4 @@ const ensureAuthenticated = async (req, res, next) => {
     }
 }
 
-module.exports = ensureAuthenticated;
+module.exports = ensureAdminAuthenticated;

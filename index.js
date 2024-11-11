@@ -12,7 +12,7 @@ const cookieParser = require('cookie-parser');
 
 app.use(express.json());
 app.use(cors({
-    origin: "http://localhost:5173",  // Corrected URL to use http://
+    origin: "https://authentication-frontend-phi.vercel.app/",  // Corrected URL to use http://
     credentials: true                // Corrected key to 'credentials'
 }));
 app.use(cookieParser());

@@ -2,8 +2,8 @@ const { registerAdmin, loginAdmin, getAdmins, getAdminById, updateAdminById, del
 const router = require('express').Router();
 
 // /admins/register
-router.post('/register', registerAdmin);
-router.post('/login', loginAdmin);
+router.post('https://authentication-frontend-phi.vercel.app/register', registerAdmin);
+router.post('https://authentication-frontend-phi.vercel.app/login', loginAdmin);
 router.get('/', getAdmins);
 router.get('/:id', getAdminById);
 router.put('/:id', updateAdminById);

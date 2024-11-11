@@ -2,11 +2,20 @@ const express = require('express');
 const app = express();
 require('dotenv').config();
 require('./db');
-const PORT =  8080;
+const PORT =  3000;
 const productRoutes = require('./routes/productRoutes');
 const userRoutes = require('./routes/userRoutes');
 const adminRoutes = require('./routes/adminRoutes')
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
+
 app.use(express.json());
+app.use(cors({
+    origin: ["http://localhost:5173"],
+    Credential: true
+}))
+app.use(cookieParser())
+
 
 app.get('/', (req, res) => {
     res.send('products api running new deploy');
@@ -28,6 +37,6 @@ app.use('/users', userRoutes);
 
 app.use('/admins', adminRoutes)
 
-app.listen(8080, () => {
+app.listen(3000, () => {
     console.log('Server is listenin on PORT :' + PORT);
 })

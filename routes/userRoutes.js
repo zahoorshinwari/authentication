@@ -1,5 +1,5 @@
 
-const { registerUser, loginUser, getUser, getUserById, updateUserById, deleteUserById } = require('../conrollers/userController');
+const { registerUser, loginUser, getUser, getUserById, updateUserById, deleteUserById, logoutUser } = require('../conrollers/userController');
 
 const router = require('express').Router();
 
@@ -10,5 +10,6 @@ router.get('/', getUser)
 router.get('/:id', getUserById)    
 router.put('/:id', updateUserById)    
 router.delete('/:id', deleteUserById)    
+router.post('/logout', logoutUser);
 
 module.exports = router;

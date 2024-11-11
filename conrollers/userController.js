@@ -5,9 +5,9 @@ const User = require('../models/User');
 // Register a new user
 const registerUser = async (req, res) => {
     try {
-        const { name, email, password, phoneNumber, profession, address, city } = req.body;
+        const { name, profession, phoneNumber, email, address, city, password } = req.body;
 
-        if (!name || !email || !password || !phoneNumber || !profession || !address || !city) {
+        if (!name || !profession || !phoneNumber || !email || !address || !city || !password) {
             return res.status(400).json({ message: "All fields are required" });
         }
 
@@ -20,12 +20,12 @@ const registerUser = async (req, res) => {
 
         const newUser = new User({
             name,
-            email,
-            password: hashedPassword,
-            phoneNumber,
             profession,
+            phoneNumber,
+            email,
             address,
             city,
+            password: hashedPassword,
             isApproved: false  // Set approval status to false
         });
 
@@ -126,13 +126,26 @@ const deleteUserById = async (req, res) => {
     }
 };
 
+
+// Logout a user
+const logoutUser = async (req, res) => {
+    try {
+        // Clear the JWT token from the client-side (usually handled by the client).
+        res.status(200).json({ message: "Logout successful" });
+    } catch (err) {
+        console.error("Error in logout:", err);
+        res.status(500).json({ message: "Internal server error" });
+    }
+};
+
 module.exports = {
     registerUser,
     loginUser,
     getUser,
     getUserById,
     updateUserById,
-    deleteUserById
+    deleteUserById, 
+    logoutUser
 };
 
 

@@ -13,7 +13,7 @@ const cookieParser = require('cookie-parser');
 app.use(express.json());
 app.use(
     cors({
-        origin: ["http://localhost:5173", "https://frontend-three-wheat-65.vercel.app"], // Array of allowed origins
+        origin: ["http://localhost:5173", "https://frontend-navy-ten-94.vercel.app"], // Array of allowed origins
         methods: ['GET', 'POST'],
         credentials: true // Allow credentials (cookies, authorization headers, etc.)
     })
